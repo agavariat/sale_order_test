@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <data inherit_id="sale.report_saleorder_document">
 
-            <xpath expr="//t[@t-set='address']" position="replace">           
+    <xpath expr="//t[@t-set='address']" position="replace">           
             </xpath>
 
             <xpath expr="//t[@t-if='doc.partner_shipping_id == doc.partner_invoice_id                              and doc.partner_invoice_id != doc.partner_id                              or doc.partner_shipping_id != doc.partner_invoice_id']" position="replace"/>    			
@@ -40,7 +40,7 @@
                             </t>
                         </div>
 
-                        <div class="col-5">
+                        <div class="col-5" >
                             <h4 align="center">
                                 <b><t t-if="not (env.context.get('proforma', False) or is_pro_forma)">
                                     <span t-if="doc.state not in ['draft','sent']">ORDEN DE VENTA</span>
@@ -52,27 +52,31 @@
                                 <span t-field="doc.name"/></b>
                             </h4>
 
-                            <div id="informations">
-                                <!--div t-if="doc.client_order_ref" class="col-auto col-3 mw-100 mb-2">
-                                    <strong>Your Reference:</strong>
-                                    <p class="m-0" t-field="doc.client_order_ref"/>
-                                </div-->
-                                <div t-if="doc.date_order and doc.state not in ['draft','sent']" class="col-12">
+                            <div id="informations">                                
+                                <div t-if="doc.date_order" class="col-12">
                                     <strong>Fecha:</strong>
-                                    <span class="m-0" t-field="doc.date_order"/>
+                                    <span class="m-0" t-field="doc.date_order" t-options='{"format": "dd-MM-yyyy"}'/>
                                 </div>
-                                <div t-if="doc.date_order and doc.state in ['draft','sent']" class="col-12">
-                                    <strong>Fecha:</strong>
-                                    <span class="m-0" t-field="doc.date_order" t-options="{&quot;widget&quot;: &quot;date&quot;}"/>
+                                <div t-if="doc.date_order" class="col-12">
+                                    <strong>Plazo de Pago:</strong>
+                                    <span class="m-0" t-field="doc.payment_term_id" t-options="{&quot;widget&quot;: &quot;date&quot;}"/>
                                 </div>
-                                <div t-if="doc.validity_date and doc.state in ['draft', 'sent']" class="col-12" name="expiration_date">
+                                <div t-if="doc.validity_date" class="col-12" name="expiration_date">
                                     <strong>Validez:</strong>
                                     <span class="m-0" t-field="doc.validity_date"/>
+                                </div>
+                                <div t-if="doc.incoterm" groups="sale_stock.group_display_incoterm">
+                                    <strong>Incoterm:</strong>
+                                    <span class="m-0" t-field="doc.incoterm.code"/>
+                                </div>
+                                <div t-if="doc.client_order_ref" class="col-12">
+                                    <strong>Referencia:</strong>
+                                    <span class="m-0" t-field="doc.client_order_ref"/>
                                 </div>
                                 <div t-if="doc.user_id.name" class="col-12">
                                     <strong>Vendedor:</strong>
                                     <span class="m-0" t-field="doc.user_id"/>
-                                </div>
+                                </div>                                
                             </div>
                         </div>
                     </div>
